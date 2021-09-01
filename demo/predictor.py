@@ -96,6 +96,10 @@ class VisualizationDemo(object):
                 predictions = predictions["instances"].to(self.cpu_device)
                 vis_frame = video_visualizer.draw_instance_predictions(frame, predictions)
             elif "sem_seg" in predictions:
+                predictions["sem_seg"][31] -= 50  # water
+                predictions["sem_seg"][29] -= 50  # terrain / grass
+                predictions["sem_seg"][25] -= 50  # mountain
+                predictions["sem_seg"][13] += 0.01  # road
                 vis_frame = video_visualizer.draw_sem_seg(
                     frame, predictions["sem_seg"].argmax(dim=0).to(self.cpu_device)
                 )
