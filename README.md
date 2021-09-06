@@ -8,6 +8,10 @@
   <img src="https://bowenc0221.github.io/images/maskformer.png" width="100%" height="100%"/>
 </div><br/>
 
+### Custom
+- demo/process_videos.py - примитивный скрипт для аннотации папок видео, пути к папкам прописываются внутри скрипта,
+пока без CLI
+
 ### Features
 * Better results while being more efficient.
 * Unified view of semantic- and instance-level segmentation tasks.

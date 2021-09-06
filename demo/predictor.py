@@ -6,6 +6,7 @@ import multiprocessing as mp
 from collections import deque
 
 import cv2
+import numpy as np
 import torch
 
 from detectron2.data import MetadataCatalog
@@ -100,12 +101,14 @@ class VisualizationDemo(object):
                 predictions["sem_seg"][29] -= 50  # terrain / grass
                 predictions["sem_seg"][25] -= 50  # mountain
                 predictions["sem_seg"][13] += 0.01  # road
-                vis_frame = video_visualizer.draw_sem_seg(
-                    frame, predictions["sem_seg"].argmax(dim=0).to(self.cpu_device)
-                )
+                vis_frame = predictions["sem_seg"].argmax(dim=0).to(self.cpu_device).numpy().astype(np.uint8)
+                # vis_frame = video_visualizer.draw_sem_seg(
+                #     frame, predictions["sem_seg"].argmax(dim=0).to(self.cpu_device)
+                # )
 
             # Converts Matplotlib RGB format to OpenCV BGR format
-            vis_frame = cv2.cvtColor(vis_frame.get_image(), cv2.COLOR_RGB2BGR)
+            # vis_frame = cv2.cvtColor(vis_frame.get_image(), cv2.COLOR_RGB2BGR)
+            vis_frame = cv2.cvtColor(vis_frame, cv2.COLOR_GRAY2BGR)
             return vis_frame
 
         frame_gen = self._frame_from_video(video)
