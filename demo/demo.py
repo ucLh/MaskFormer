@@ -10,6 +10,7 @@ import sys
 sys.path.insert(1, os.path.join(sys.path[0], '..'))
 # fmt: on
 
+from pathlib import Path
 import tempfile
 import time
 import warnings
@@ -179,8 +180,13 @@ if __name__ == "__main__":
                 isColor=True,
             )
         assert os.path.isfile(args.video_input)
-        for vis_frame in tqdm.tqdm(demo.run_on_video(video), total=num_frames):
+        for i, vis_frame in tqdm.tqdm(enumerate(demo.run_on_video(video)), total=num_frames):
             if args.output:
+                images_output_dir = output_fname[:-4]  # remove .mp4 suffix
+                Path(images_output_dir).mkdir(exist_ok=True, parents=True)
+                images_output_name = os.path.join(images_output_dir, f'image-{(i+1):07d}.png')
+                vis_frame = cv2.resize(vis_frame, (width, height), interpolation=cv2.INTER_NEAREST)
+                cv2.imwrite(images_output_name, vis_frame)
                 output_file.write(vis_frame)
             else:
                 cv2.namedWindow(basename, cv2.WINDOW_NORMAL)

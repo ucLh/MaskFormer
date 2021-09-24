@@ -97,18 +97,36 @@ class VisualizationDemo(object):
                 predictions = predictions["instances"].to(self.cpu_device)
                 vis_frame = video_visualizer.draw_instance_predictions(frame, predictions)
             elif "sem_seg" in predictions:
-                predictions["sem_seg"][31] -= 50  # water
-                predictions["sem_seg"][29] -= 50  # terrain / grass
-                predictions["sem_seg"][25] -= 50  # mountain
-                predictions["sem_seg"][13] += 0.01  # road
-                vis_frame = predictions["sem_seg"].argmax(dim=0).to(self.cpu_device).numpy().astype(np.uint8)
-                # vis_frame = video_visualizer.draw_sem_seg(
-                #     frame, predictions["sem_seg"].argmax(dim=0).to(self.cpu_device)
-                # )
+                # predictions["sem_seg"] -= 50
+                predictions["sem_seg"][3] -= 50  # fence
+                # predictions["sem_seg"][6] += 50  # wall
+                # predictions["sem_seg"][13] += 50  # road
+                # predictions["sem_seg"][17] += 50  # building
+                # predictions["sem_seg"][19] += 50  # person
+                # predictions["sem_seg"][26] += 50  # sand
+                # predictions["sem_seg"][27] += 50  # sky
+                # predictions["sem_seg"][29] += 50  # terrain / grass
+                # predictions["sem_seg"][30] += 50  # trees
+                # predictions["sem_seg"][32] += 50  # banner
+                # predictions["sem_seg"][35] += 50  # billboard
+                # predictions["sem_seg"][44] += 50  # street-light
+                # predictions["sem_seg"][45] += 50  # pole
+                predictions["sem_seg"][47] += 0.1  # utility-pole
+                # predictions["sem_seg"][49] += 50  # traffic-sign--back
+                # predictions["sem_seg"][50] += 50  # traffic-sign--front
+                # predictions["sem_seg"][55] += 50  # car
+                # predictions["sem_seg"][61] += 50  # truck
+                # predictions["sem_seg"][63] += 50  # car-mount
+                # predictions["sem_seg"][64] += 50  # ego-vehicle
+
+                # vis_frame = predictions["sem_seg"].argmax(dim=0).to(self.cpu_device).numpy().astype(np.uint8)
+                vis_frame = video_visualizer.draw_sem_seg(
+                    frame, predictions["sem_seg"].argmax(dim=0).to(self.cpu_device)
+                )
 
             # Converts Matplotlib RGB format to OpenCV BGR format
-            # vis_frame = cv2.cvtColor(vis_frame.get_image(), cv2.COLOR_RGB2BGR)
-            vis_frame = cv2.cvtColor(vis_frame, cv2.COLOR_GRAY2BGR)
+            vis_frame = cv2.cvtColor(vis_frame.get_image(), cv2.COLOR_RGB2BGR)
+            # vis_frame = cv2.cvtColor(vis_frame, cv2.COLOR_GRAY2BGR)
             return vis_frame
 
         frame_gen = self._frame_from_video(video)

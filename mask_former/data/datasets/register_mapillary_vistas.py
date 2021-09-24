@@ -321,7 +321,7 @@ MAPILLARY_VISTAS_SEM_SEG_CATEGORIES = [
         "evaluate": True,
     },
     {
-        "color": [153, 153, 153],
+        "color": [0, 0, 80],
         "instances": True,
         "readable": "Pole",
         "name": "object--support--pole",
